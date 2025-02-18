@@ -7,7 +7,7 @@ class DatabaseService {
   static Database? _db;
   static final DatabaseService instance = DatabaseService._constructor();
 
-  final String _userTable = "user";
+  final String _userTable = 'user';
   final String _userIdColumn = 'id';
   final String _userFirstNameColumn = 'firstName';
   final String _userLastNameColumn = 'lastName';
@@ -16,6 +16,7 @@ class DatabaseService {
   final String _userMailColumn = 'mail';
 
   DatabaseService._constructor();
+
   Future<Database> get database async {
     if (_db != null) return _db!;
     _db = await getDatabase();
@@ -26,20 +27,33 @@ class DatabaseService {
     final databaseDirPath = await getDatabasesPath();
 
     final databasePath = join(databaseDirPath, "test_db.db");
-    final database =
-        await openDatabase(databasePath, version: 1, onCreate: (db, version) {
-      db.execute('''
-      CREATE TABLE $_userTable(
-      $_userIdColumn TEXT PRIMARY KEY,
-      $_userFirstNameColumn TEXT NOT NULL,
-      $_userLastNameColumn TEXT NOT NULL,
-      $_userAgeColumn TEXT NOT NULL,
-      $_userGenderColumn TEXT NOT NULL,
-      $_userMailColumn TEXT NOT NULL,
-      )
-
-''');
-    });
+    try {
+      final database =
+          await openDatabase(databasePath, version: 1, onCreate: (db, version) {
+        db.execute('''
+          CREATE TABLE user (
+            id TEXT PRIMARY KEY,
+            firstName TEXT,
+            lastName TEXT,
+            age TEXT,
+            gender TEXT,
+            mail TEXT
+          )
+        ''');
+        //       db.execute('''
+        // CREATE TABLE $_userTable(
+        //   $_userIdColumn TEXT PRIMARY KEY,
+        //   $_userFirstNameColumn TEXT,
+        //   $_userLastNameColumn TEXT,
+        //   $_userAgeColumn TEXT,
+        //   $_userGenderColumn TEXT,
+        //   $_userMailColumn TEXT,
+        //   )''');
+      });
+    } catch (e) {
+      print("object");
+      // TODO
+    }
     return database;
   }
 

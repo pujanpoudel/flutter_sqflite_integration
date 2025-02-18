@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sqlite_demo/services/database_service.dart';
+import 'package:sqlite_demo/widgets/tile_widget.dart';
 
 import '../models/user_model.dart';
 
@@ -23,9 +24,13 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text("data"),
+      ),
       floatingActionButton: _addUserButton(),
-      body: _usersList(),
+      body:
+          // TileWidget()
+          _usersList(),
     );
   }
 
@@ -123,10 +128,15 @@ class _HomepageState extends State<Homepage> {
                           MaterialButton(
                             textTheme: ButtonTextTheme.accent,
                             onPressed: () {
-                              _databaseService.addUser(_userId!, _firstName!,
-                                  _lastName!, _age!, _gender!, _mail!);
-                              setState(() {});
-                              Navigator.pop(context);
+                              try {
+                                _databaseService.addUser(_userId!, _firstName!,
+                                    _lastName!, _age!, _gender!, _mail!);
+                                setState(() {});
+                                Navigator.pop(context);
+                              } catch (e) {
+                                print("object");
+                                // TODO
+                              }
                             },
                             color: Colors.purple.shade100,
                             child: Text(
